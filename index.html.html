@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ruby's Gold — Joyería de Plata y Oro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --midnight:#0a0e27;
+    --midnight-light:#161c3f;
+    --gold:#d4af37;
+    --gold-bright:#f0d271;
+    --ruby:#c41e3a;
+    --ruby-dark:#8a1428;
+    --silver:#e8e8ec;
+    --ivory:#f7f5f0;
+    --ink:#211c14;
+    --serif:'Cormorant Garamond', serif;
+    --sans:'Inter', sans-serif;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    background:var(--ivory);
+    color:var(--ink);
+    font-family:var(--sans);
+    overflow-x:hidden;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important;}
+  }
+
+  a{color:inherit; text-decoration:none;}
+
+  .eyebrow{
+    font-family:var(--sans);
+    font-size:0.7rem;
+    letter-spacing:0.28em;
+    text-transform:uppercase;
+    font-weight:500;
+  }
+
+  /* ---------- setting-line divider (firma visual) ---------- */
+  .setting-divider{
+    width:100%;
+    height:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+  }
+  .setting-divider span{
+    width:3px; height:3px;
+    border-radius:50%;
+    background:var(--gold);
+    opacity:0.6;
+  }
+  .setting-divider::before,
+  .setting-divider::after{
+    content:'';
+    height:1px;
+    flex:1;
+    max-width:160px;
+    background:linear-gradient(90deg, transparent, var(--gold), transparent);
+    opacity:0.55;
+  }
+
+  /* ============ NAV ============ */
+  header{
+    position:fixed;
+    top:0; left:0; right:0;
+    z-index:100;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:1.4rem 4vw;
+    background:rgba(10,14,39,0.72);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(212,175,55,0.18);
+    transition:padding 0.3s ease;
+  }
+  .logo{
+    font-family:var(--serif);
+    font-size:1.5rem;
+    font-style:italic;
+    color:var(--silver);
+    letter-spacing:0.02em;
+  }
+  .logo b{ color:var(--gold); font-style:normal; font-weight:600;}
+
+  nav ul{
+    display:flex;
+    gap:2.4rem;
+    list-style:none;
+  }
+  nav a{
+    color:var(--silver);
+    font-size:0.78rem;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    font-weight:400;
+    position:relative;
+    padding-bottom:6px;
+  }
+  nav a::after{
+    content:'';
+    position:absolute;
+    left:0; bottom:0;
+    width:0; height:1px;
+    background:var(--gold);
+    transition:width 0.35s ease;
+  }
+  nav a:hover::after{ width:100%; }
+
+  .nav-cta{
+    border:1px solid var(--gold);
+    color:var(--gold) !important;
+    padding:0.55rem 1.3rem;
+    border-radius:2px;
+    font-size:0.72rem !important;
+  }
+  .nav-cta::after{display:none;}
+  .nav-cta:hover{ background:var(--gold); color:var(--midnight) !important; }
+
+  .menu-toggle{display:none; flex-direction:column; gap:5px; cursor:pointer; background:none; border:none;}
+  .menu-toggle span{width:24px; height:1.5px; background:var(--silver);}
+
+  /* ============ HERO ============ */
+  .hero{
+    position:relative;
+    min-height:100vh;
+    background:
+      radial-gradient(ellipse 70% 60% at 75% 25%, rgba(212,175,55,0.16), transparent 60%),
+      radial-gradient(ellipse 50% 50% at 15% 80%, rgba(196,30,58,0.14), transparent 60%),
+      linear-gradient(160deg, var(--midnight) 0%, #0d1230 55%, var(--midnight-light) 100%);
+    display:flex;
+    align-items:center;
+    overflow:hidden;
+    padding:0 4vw;
+  }
+
+  /* ambient sparkle field */
+.sparkle-field{
+    position:absolute; inset:0; pointer-events:none; z-index:1;
+  }
+  .sparkle{
+    position:absolute;
+    width:3px; height:3px;
+    background:var(--gold-bright);
+    border-radius:50%;
+    box-shadow:0 0 6px 1px rgba(240,210,113,0.9);
+    animation:twinkle 3.2s ease-in-out infinite;
+  }
+  @keyframes twinkle{
+    0%,100%{ opacity:0.15; transform:scale(1);}
+    50%{ opacity:1; transform:scale(1.6);}
+  }
+
+  .hero-inner{
+    position:relative;
+    z-index:2;
+    display:grid;
+    grid-template-columns:1.1fr 0.9fr;
+    gap:3rem;
+    align-items:center;
+    width:100%;
+    max-width:1280px;
+    margin:0 auto;
+    padding-top:5rem;
+  }
+
+  .hero-eyebrow{ color:var(--ruby); margin-bottom:1.4rem; display:flex; align-items:center; gap:0.7rem;}
+  .hero-eyebrow .line{width:34px; height:1px; background:var(--ruby);}
+
+  .hero h1{
+    font-family:var(--serif);
+    font-weight:500;
+    font-size:clamp(2.8rem, 6vw, 5rem);
+    line-height:1.05;
+    color:var(--silver);
+    letter-spacing:0.01em;
+  }
+  .hero h1 em{
+    font-style:italic;
+    font-weight:500;
+    background:linear-gradient(100deg, var(--gold) 10%, var(--gold-bright) 45%, var(--gold) 80%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+
+  .hero p.lede{
+    margin-top:1.6rem;
+    max-width:460px;
+    color:#b9bdd6;
+    font-size:1.05rem;
+    line-height:1.7;
+    font-weight:300;
+  }
+
+  .hero-actions{
+    margin-top:2.6rem;
+    display:flex;
+    gap:1.1rem;
+    flex-wrap:wrap;
+  }
+
+  .btn-primary{
+    background:linear-gradient(120deg, var(--gold), var(--gold-bright));
+    color:var(--midnight);
+    padding:0.95rem 2.1rem;
+    font-size:0.78rem;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    font-weight:600;
+    border-radius:2px;
+    display:inline-block;
+    position:relative;
+    overflow:hidden;
+    transition:transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .btn-primary:hover{
+    transform:translateY(-2px);
+    box-shadow:0 10px 30px -10px rgba(212,175,55,0.6);
+  }
+
+  .btn-secondary{
+    border:1px solid rgba(232,232,236,0.35);
+    color:var(--silver);
+    padding:0.95rem 2.1rem;
+    font-size:0.78rem;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    font-weight:500;
+    border-radius:2px;
+    transition:border-color 0.3s ease, color 0.3s ease;
+  }
+  .btn-secondary:hover{ border-color:var(--ruby); color:var(--ruby);
+    }
+
+  /* hero gem visual */
+  .hero-visual{
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    height:480px;
+  }
+  .gem-ring{
+    position:absolute;
+    width:340px; height:340px;
+    border:1px solid rgba(212,175,55,0.25);
+    border-radius:50%;
+    animation:rotate-slow 30s linear infinite;
+  }
+  .gem-ring::before{
+    content:'';
+    position:absolute;
+    top:-1px; left:50%;
+    width:6px; height:6px;
+    background:var(--gold-bright);
+    border-radius:50%;
+    box-shadow:0 0 12px 3px rgba(240,210,113,0.8);
+    transform:translateX(-50%);
+  }
+  .gem-ring.r2{
+    width:420px; height:420px;
+    border-color:rgba(196,30,58,0.2);
+    animation-duration:42s;
+    animation-direction:reverse;
+  }
+  .gem-ring.r2::before{ background:var(--ruby); box-shadow:0 0 12px 3px rgba(196,30,58,0.7);}
+  @keyframes rotate-slow{ to{ transform:rotate(360deg);} }
+
+  .gem-core{
+    position:relative;
+    z-index:3;
+    width:200px; height:200px;
+    transition:transform 0.4s ease;
+  }
+  .gem-core:hover{ transform:scale(1.04) rotate(2deg); }
+  .gem-core svg{ width:100%; height:100%; filter:drop-shadow(0 20px 40px rgba(196,30,58,0.35)); }
+
+  .scroll-cue{
+    position:absolute;
+    bottom:2.4rem; left:50%;
+    transform:translateX(-50%);
+    display:flex; flex-direction:column; align-items:center;
+    gap:0.6rem;
+    color:#8d92b5;
+    font-size:0.65rem;
+    letter-spacing:0.2em;
+    text-transform:uppercase;
+    z-index:2;
+  }
+  .scroll-cue .stem{
+    width:1px; height:34px;
+    background:linear-gradient(180deg, var(--gold), transparent);
+    animation:stem-pulse 2s ease-in-out infinite;
+  }
+  @keyframes stem-pulse{ 0%,100%{opacity:0.3;} 50%{opacity:1;} }
+
+  /* ============ SECTION SHELL ============ */
+  section{ padding:7rem 4vw; }
+  .section-inner{ max-width:1280px; margin:0 auto; }
+
+  .section-head{
+    text-align:center;
+    max-width:620px;
+    margin:0 auto 3.6rem;
+  }
+  .section-head .eyebrow{ color:var(--ruby); margin-bottom:0.9rem; }
+  .section-head h2{
+    font-family:var(--serif);
+    font-weight:500;
+    font-size:clamp(2.1rem, 3.6vw, 2.9rem);
+    color:var(--ink);
+    letter-spacing:0.01em;
+  }
+  .section-head p{
+    margin-top:1rem;
+    color:#6b6457;
+    font-size:1rem;
+    line-height:1.7;
+    font-weight:300;
+  }
+  .dark-section .section-head h2{ color:var(--silver); }
+  .dark-section .section-head p{ color:#a9adc8; }
+
+  /* ============ COLLECTION (signature: vitrina) ============ */
+  .collection{ background:var(--ivory); }
+
+  .vitrine-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:1.8rem;
+  }
+
+  .vitrine-card{
+    position:relative;
+    background:var(--midnight);
+    border-radius:4px;
+    overflow:hidden;
+    aspect-ratio:3/4;
+    cursor:pointer;
+  }
+  .vitrine-card .glass-sheen{
+    position:absolute; inset:0;
+    background:linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.08) 45%, transparent 60%);
+    transform:translateX(-120%);
+    transition:transform 0.9s ease;
+    z-index:4;
+    pointer-events:none;
+  }
+  .vitrine-card:hover .glass-sheen{ transform:translateX(120%); }
+
+  .vitrine-card .piece-icon{
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    z-index:2;
+    transition:transform 0.5s ease;
+  }
+  .vitrine-card:hover .piece-icon{ transform:scale(1.07); }
+  .vitrine-card .piece-icon svg{ width:46%; height:46%; }
+
+  .vitrine-card .card-glow{
+    position:absolute; inset:0;
+    background:radial-gradient(circle at 50% 40%, var(--glow-color, rgba(212,175,55,0.25)), transparent 65%);
+    z-index:1;
+  }
+
+  .vitrine-card .card-meta{
+    position:absolute; left:0; right:0; bottom:0;
+    padding:1.4rem 1.3rem;
+    z-index:3;
+    background:linear-gradient(180deg, transparent, rgba(10,14,39,0.92) 75%);
+  }
+  .card-meta .material{
+    font-size:0.65rem;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    color:var(--gold);
+    font-weight:500;
+  }
+  .card-meta h3{
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:1.4rem;
+    color:var(--silver);
+    margin-top:0.3rem;
+    font-weight:500;
+  }
+  .card-meta .price{
+    margin-top:0.4rem;
+    font-size:0.85rem;
+    color:#9da2c2;
+    font-weight:300;
+  }
+
+  /* ============ ATELIER / STORY (split) ============ */
+  .atelier{ background:var(--midnight); position:relative; }
+  .atelier::before{
+    content:'';
+    position:absolute; inset:0;
+    background:radial-gradient(ellipse 60% 50% at 85% 15%, rgba(196,30,58,0.1), transparent 60%);
+    pointer-events:none;
+  }
+  .atelier-grid{
+    display:grid;
+    grid-template-columns:0.85fr 1.15fr;
+    gap:4.5rem;
+    align-items:center;
+    position:relative;
+    z-index:1;
+  }
+  .atelier-visual{
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .atelier-frame{
+    width:100%;
+    aspect-ratio:4/5;
+    border:1px solid rgba(212,175,55,0.3);
+    border-radius:4px;
+    position:relative;
+    display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(160deg, rgba(212,175,55,0.06), rgba(196,30,58,0.05));
+  }
+  .atelier-frame::before, .atelier-frame::after{
+    content:'';
+    position:absolute;
+    width:26px; height:26px;
+    border:1px solid var(--gold);
+  }
+  .atelier-frame::before{ top:-1px; left:-1px; border-right:none; border-bottom:none; }
+  .atelier-frame::after{ bottom:-1px; right:-1px; border-left:none; border-top:none; }
+  .atelier-frame svg{ width:55%; height:55%; }
+
+  .atelier-text .eyebrow{ color:var(--gold); margin-bottom:1rem; }
+  .atelier-text h2{
+    font-family:var(--serif);
+    font-weight:500;
+    font-size:clamp(2rem, 3.4vw, 2.7rem);
+    color:var(--silver);
+    line-height:1.2;
+  }
+  .atelier-text h2 em{ color:var(--ruby); font-style:italic; }
+  .atelier-text p{
+    margin-top:1.3rem;
+    color:#aeb2cc;
+    line-height:1.8;
+    font-weight:300;
+    max-width:520px;
+  }
+
+  .atelier-stats{
+    display:flex;
+    gap:2.6rem;
+    margin-top:2.4rem;
+  }
+  .stat strong{
+    display:block;
+    font-family:var(--serif);
+    font-size:2rem;
+    color:var(--gold);
+    font-weight:500;
+  }
+  .stat span{
+    font-size:0.7rem;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:#8d92b5;
+  }
+
+  /* ============ MATERIALS STRIP ============ */
+  .materials{ background:var(--ivory); }
+  .materials-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:2.2rem;
+  }
+  .material-card{
+    padding:2.6rem 2rem;
+    border:1px solid rgba(33,28,20,0.1);
+    border-top:2px solid var(--mc-color, var(--gold));
+    text-align:center;
+    transition:transform 0.35s ease, box-shadow 0.35s ease;
+    background:#fff;
+  }
+  .material-card:hover{
+    transform:translateY(-6px);
+    box-shadow:0 18px 40px -20px rgba(33,28,20,0.25);
+  }
+  .material-card .m-icon{
+    width:54px; height:54px;
+    margin:0 auto 1.3rem;
+  }
+  .material-card h3{
+    font-family:var(--serif);
+    font-size:1.5rem;
+    font-weight:500;
+    color:var(--ink);
+  }
+  .material-card p{
+    margin-top:0.7rem;
+    font-size:0.9rem;
+    color:#736c5d;
+    line-height:1.65;
+    font-weight:300;
+  }
+
+  /* ============ TESTIMONIALS ============ */
+  .testimonials{ background:var(--midnight-light); position:relative; }
+  .testi-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:1.8rem;
+  }
+  .testi-card{
+    background:rgba(232,232,236,0.04);
+    border:1px solid rgba(212,175,55,0.16);
+    padding:2.2rem;
+    border-radius:4px;
+  }
+  .testi-stars{ color:var(--gold); font-size:0.85rem; letter-spacing:0.2em; margin-bottom:1rem; }
+  .testi-card p{
+    color:#c3c6dc;
+    font-size:0.95rem;
+    line-height:1.75;
+    font-weight:300;
+    font-style:italic;
+  }
+  .testi-name{
+    margin-top:1.4rem;
+    font-size:0.78rem;
+    letter-spacing:0.06em;
+    color:var(--silver);
+    font-weight:500;
+    font-style:normal;
+  }
+  .testi-name span{ display:block; color:#7d82a3; font-weight:300; font-size:0.78rem; margin-top:0.15rem;}
+
+  /* ============ CTA / NEWSLETTER ============ */
+  .cta-band{
+    background:linear-gradient(120deg, var(--ruby-dark), var(--ruby) 50%, var(--ruby-dark));
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+  }
+  .cta-band::before{
+    content:'';
+    position:absolute; inset:0;
+    background:repeating-linear-gradient(45deg, rgba(255,255,255,0.03) 0 2px, transparent 2px 18px);
+  }
+  .cta-band .section-inner{ position:relative; z-index:1; }
+  .cta-band h2{
+    font-family:var(--serif);
+    font-size:clamp(1.9rem, 3.4vw, 2.6rem);
+    color:var(--ivory);
+    font-weight:500;
+  }
+  .cta-band p{
+    margin-top:0.9rem;
+    color:rgba(247,245,240,0.85);
+    font-weight:300;
+  }
+  .cta-form{
+    margin-top:2.2rem;
+    display:flex;
+    justify-content:center;
+    gap:0.8rem;
+    flex-wrap:wrap;
+  }
+  .cta-form input{
+    padding:0.95rem 1.3rem;
+    border:1px solid rgba(247,245,240,0.4);
+    background:transparent;
+    color:var(--ivory);
+    font-family:var(--sans);
+    font-size:0.85rem;
+    width:280px;
+    border-radius:2px;
+  }
+  .cta-form input::placeholder{ color:rgba(247,245,240,0.6); }
+  .cta-form button{
+    background:var(--ivory);
+    color:var(--ruby-dark);
+    border:none;
+    padding:0.95rem 2rem;
+    font-size:0.78rem;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    font-weight:600;
+    border-radius:2px;
+    cursor:pointer;
+    transition:background 0.3s ease;
+  }
+  .cta-form button:hover{ background:var(--gold-bright); }
+
+  /* ============ FOOTER ============ */
+  footer{
+    background:var(--midnight);
+    color:#9da2c2;
+    padding:4.5rem 4vw 2rem;
+  }
+  .footer-grid{
+    max-width:1280px;
+    margin:0 auto;
+    display:grid;
+    grid-template-columns:1.4fr 1fr 1fr 1fr;
+    gap:3rem;
+    padding-bottom:3rem;
+    border-bottom:1px solid rgba(212,175,55,0.15);
+  }
+  .footer-brand .logo{ margin-bottom:1rem; display:block; }
+  .footer-brand p{ font-size:0.88rem; line-height:1.7; max-width:280px; font-weight:300; }
+  .footer-col h4{
+    color:var(--silver);
+    font-size:0.78rem;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    margin-bottom:1.2rem;
+    font-weight:500;
+  }
+  .footer-col ul{ list-style:none; display:flex; flex-direction:column; gap:0.7rem; }
+  .footer-col a{ font-size:0.88rem; color:#9da2c2; transition:color 0.25s ease; }
+  .footer-col a:hover{ color:var(--gold); }
+  .footer-bottom{
+    max-width:1280px;
+    margin:0 auto;
+    padding-top:1.8rem;
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:1rem;
+    font-size:0.78rem;
+    color:#6e7393;
+  }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width:980px){
+    nav ul{ display:none; }
+    .menu-toggle{ display:flex; }
+    .hero-inner{ grid-template-columns:1fr; text-align:center; padding-top:7rem;}
+    .hero-eyebrow{ justify-content:center; }
+    .hero p.lede{ margin-inline:auto; }
+    .hero-actions{ justify-content:center; }
+    .hero-visual{ height:340px; margin-top:1rem; }
+    .vitrine-grid{ grid-template-columns:repeat(2,1fr); }
+    .atelier-grid{ grid-template-columns:1fr; gap:2.5rem; }
+    .atelier-visual{ max-width:340px; margin:0 auto; }
+    .materials-grid{ grid-template-columns:1fr; }
+    .testi-grid{ grid-template-columns:1fr; }
+    .footer-grid{ grid-template-columns:1fr 1fr; }
+  }
+  @media (max-width:560px){
+    .vitrine-grid{ grid-template-columns:1fr; }
+    .footer-grid{ grid-template-columns:1fr; }
+    section{ padding:5rem 6vw; }
+    .cta-form input{ width:100%; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="#top" class="logo">Ruby<b>'s</b> Gold</a>
+  <nav>
+    <ul>
+      <li><a href="#coleccion">Colección</a></li>
+      <li><a href="#taller">El Taller</a></li>
+      <li><a href="#materiales">Materiales</a></li>
+      <li><a href="#testimonios">Clientes</a></li>
+      <li><a href="#contacto" class="nav-cta">Agendar Visita</a></li>
+    </ul>
+  </nav>
+  <button class="menu-toggle" aria-label="Abrir menú"><span></span><span></span><span></span></button>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="hero" id="top" style="padding-top:0; padding-bottom:0;">
+  <div class="sparkle-field" id="sparkleField"></div>
+
+  <div class="hero-inner">
+    <div class="hero-copy">
+      <div class="hero-eyebrow"><span class="line"></span>JOYERÍA DE AUTOR · PLATA Y ORO</div>
+      <h1>Piezas que no <em>existen</em><br>en ningún otro lugar.</h1>
+      <p class="lede">En Ruby's Gold cada anillo, collar y arete se diseña a mano, en ediciones únicas o limitadas. No reproducimos piezas: las creamos una sola vez, para una sola persona.</p>
+      <div class="hero-actions">
+        <a href="#coleccion" class="btn-primary">Ver la Colección</a>
+        <a href="#contacto" class="btn-secondary">Diseñar Pieza a Medida</a>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="gem-ring"></div>
+      <div class="gem-ring r2"></div>
+      <div class="gem-core">
+        <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="100,15 145,70 122,185 78,185 55,70" fill="url(#rubyGrad)" stroke="#f0d271" stroke-width="1.5"/>
+          <polygon points="100,15 145,70 100,95 55,70" fill="url(#rubyTop)" opacity="0.9"/>
+          <polygon points="55,70 100,95 78,185" fill="#8a1428" opacity="0.55"/>
+          <polygon points="145,70 100,95 122,185" fill="#c41e3a" opacity="0.7"/>
+          <line x1="100" y1="15" x2="100" y2="95" stroke="#f0d271" stroke-width="0.6" opacity="0.5"/>
+          <defs>
+            <linearGradient id="rubyGrad" x1="0" y1="0" x2="200" y2="200">
+              <stop offset="0%" stop-color="#e8506a"/>
+              <stop offset="50%" stop-color="#c41e3a"/>
+              <stop offset="100%" stop-color="#7a1024"/>
+            </linearGradient>
+            <linearGradient id="rubyTop" x1="0" y1="0" x2="200" y2="100">
+              <stop offset="0%" stop-color="#f4889c"/>
+              <stop offset="100%" stop-color="#c41e3a"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-cue"><span>Descubre</span><div class="stem"></div></div>
+</section>
+
+<!-- ================= COLLECTION ================= -->
+<section class="collection" id="coleccion">
+  <div class="section-inner">
+    <div class="section-head">
+      <div class="eyebrow">PIEZAS ÚNICAS</div>
+      <h2>La Vitrina del Mes</h2>
+      <p>Seis diseños originales, fundidos a mano. Cuando se venden, no vuelven a fabricarse: cada pieza es irrepetible por diseño, no por escasez artificial.</p>
+    </div>
+
+    <div class="vitrine-grid">
+
+      <div class="vitrine-card" style="--glow-color:rgba(212,175,55,0.3)">
+        <div class="card-glow"></div>
+        <div class="glass-sheen"></div>
+        <div class="piece-icon">
+          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="62" r="30" stroke="#d4af37" stroke-width="3"/>
+            <polygon points="50,18 62,38 50,46 38,38" fill="#c41e3a" stroke="#f0d271" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="card-meta">
+          <div class="material">Oro 18k · Rubí</div>
+          <h3>Anillo Aurora</h3>
+          <div class="price">Pieza única</div>
+        </div>
+      </div>
+
+      <div class="vitrine-card" style="--glow-color:rgba(232,232,236,0.28)">
+        <div class="card-glow"></div>
+        <div class="glass-sheen"></div>
+        <div class="piece-icon">
+          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50 20 C30 20 30 50 50 50 C70 50 70 80 50 80" stroke="#e8e8ec" stroke-width="3" fill="none"/>
+            <circle cx="50" cy="20" r="4" fill="#d4af37"/>
+            <circle cx="50" cy="80" r="4" fill="#c41e3a"/>
+          </svg>
+        </div>
+        <div class="card-meta">
+          <div class="material">Plata 950</div>
+          <h3>Collar Sinuoso</h3>
+          <div class="price">Edición de 1</div>
+        </div>
+      </div>
+
+      <div class="vitrine-card" style="--glow-color:rgba(196,30,58,0.28)">
+        <div class="card-glow"></div>
+        <div class="glass-sheen"></div>
+        <div class="piece-icon">
+          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="50,15 75,50 50,85 25,50" stroke="#c41e3a" stroke-width="3" fill="none"/>
+            <polygon points="50,30 63,50 50,70 37,50" fill="#d4af37" opacity="0.9"/>
+          </svg>
+        </div>
+        <div class="card-meta">
+          <div class="material">Oro Rosa · Plata</div>
+          <h3>Pendientes Rómbico</h3>
+          <div class="price">Pieza única</div>
+        </div>
+      </div>
+
+      <div class="vitrine-card" style="--glow-color:rgba(212,175,55,0.3)">
+        <div class="card-glow"></div>
+        <div class="glass-sheen"></div>
+        <div class="piece-icon">
+          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="50" r="3" fill="#f0d271"/>
+            <circle cx="50" cy="50" r="20" stroke="#d4af37" stroke-width="2" fill="none"/>
+            <circle cx="50" cy="50" r="32" stroke="#d4af37" stroke-width="1" fill="none" opacity="0.5"/>
+          </svg>
+        </div>
+        <div class="card-meta">
+          <div class="material">Oro 18k</div>
+          <h3>Brazalete Halo</h3>
+          <div class="price">Edición de 3</div>
+        </div>
+      </div>
+
+      <div class="vitrine-card" style="--glow-color:rgba(232,232,236,0.28)">
+        <div class="card-glow"></div>
+        <div class="glass-sheen"></div>
+        <div class="piece-icon">
+          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M30 70 L50 25 L70 70 Z" stroke="#e8e8ec" stroke-width="3" fill="none"/>
+            <line x1="38" y1="55" x2="62" y2="55" stroke="#c41e3a" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="card-meta">
+          <div class="material">Plata 950 · Rubí</div>
+          <h3>Anillo Cima</h3>
+          <div class="price">Pieza única</div>
+        </div>
+      </div>
+
+      <div class="vitrine-card" style="--glow-color:rgba(196,30,58,0.28)">
+        <div class="card-glow"></div>
+        <div class="glass-sheen"></div>
+        <div class="piece-icon">
+          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="50" cy="50" rx="28" ry="18" stroke="#d4af37" stroke-width="2.5" fill="none"/>
+            <ellipse cx="50" cy="50" rx="14" ry="9" fill="#c41e3a" opacity="0.85"/>
+          </svg>
+        </div>
+        <div class="card-meta">
+          <div class="material">Oro 18k · Rubí</div>
+          <h3>Broche Eclipse</h3>
+          <div class="price">Edición de 2</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="setting-divider"><span></span><span></span><span></span></div>
+
+<!-- ================= ATELIER ================= -->
+<section class="atelier dark-section" id="taller">
+  <div class="section-inner atelier-grid">
+    <div class="atelier-visual">
+      <div class="atelier-frame">
+        <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 90 Q20 30 60 20 Q100 30 100 90" stroke="#d4af37" stroke-width="2" fill="none"/>
+          <circle cx="60" cy="55" r="10" fill="#c41e3a" opacity="0.85"/>
+          <line x1="35" y1="95" x2="85" y2="95" stroke="#e8e8ec" stroke-width="1.5"/>
+        </svg>
+      </div>
+    </div>
+    <div class="atelier-text">
+      <div class="eyebrow">DESDE 1994</div>
+      <h2>Cada pieza nace en <em>nuestro</em> taller, no en una fábrica.</h2>
+      <p>Ruby's Gold trabaja con orfebres que tallan, funden y engastan a mano cada diseño. No usamos moldes en serie: dibujamos, esculpimos en cera y vaciamos cada modelo de forma individual, por eso ninguna pieza sale exactamente igual a otra.</p>
+      <div class="atelier-stats">
+        <div class="stat"><strong>30+</strong><span>Años de oficio</span></div>
+        <div class="stat"><strong>100%</strong><span>Diseños propios</span></div>
+        <div class="stat"><strong>1 a 1</strong><span>Pieza por molde</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= MATERIALES ================= -->
+<section class="materials" id="materiales">
+  <div class="section-inner">
+    <div class="section-head">
+      <div class="eyebrow">MATERIALES NOBLES</div>
+      <h2>Plata y Oro, Sin Atajos</h2>
+      <p>Trabajamos solo con metales certificados. Ningún baño ni chapado: lo que ves es el metal real.</p>
+    </div>
+    <div class="materials-grid">
+
+      <div class="material-card" style="--mc-color:#d4af37">
+        <div class="m-icon">
+          <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="30" cy="30" r="24" stroke="#d4af37" stroke-width="2.5"/>
+            <circle cx="30" cy="30" r="12" fill="#d4af37" opacity="0.25"/>
+          </svg>
+        </div>
+        <h3>Oro 18 Quilates</h3>
+        <p>Amarillo, blanco y rosa. Aleación certificada que conserva su brillo durante generaciones.</p>
+      </div>
+
+      <div class="material-card" style="--mc-color:#c41e3a">
+        <div class="m-icon">
+          <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="30,8 46,24 38,52 22,52 14,24" stroke="#c41e3a" stroke-width="2.5" fill="none"/>
+          </svg>
+        </div>
+        <h3>Gemas Selectas</h3>
+        <p>Rubíes y piedras de color elegidos a mano, evaluados por pureza, talla y origen.</p>
+      </div>
+
+      <div class="material-card" style="--mc-color:#9aa0b0">
+        <div class="m-icon">
+          <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="12" y="12" width="36" height="36" rx="4" stroke="#9aa0b0" stroke-width="2.5"/>
+            <line x1="20" y1="30" x2="40" y2="30" stroke="#9aa0b0" stroke-width="2"/>
+          </svg>
+        </div>
+        <h3>Plata Ley 950</h3>
+        <p>Mayor pureza que la plata estándar, tratada con acabados que resisten el uso diario.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="setting-divider"><span></span><span></span><span></span></div>
+
+<!-- ================= CTA ================= -->
+<section class="cta-band" id="contacto">
+  <div class="section-inner">
+    <h2>Agenda tu cita de diseño</h2>
+    <p>Conversemos sobre la pieza que quieres crear. Sin moldes, sin catálogos repetidos: solo tu diseño.</p>
+    <form class="cta-form" onsubmit="event.preventDefault(); this.querySelector('button').textContent='Solicitud Enviada ✓';">
+      <input type="email" placeholder="Tu correo electrónico" required>
+      <button type="submit">Solicitar Cita</button>
+    </form>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="#top" class="logo">Ruby<b>'s</b> Gold</a>
+      <p>Joyería de autor en plata y oro. Cada pieza, diseñada y fabricada a mano, una sola vez.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Explorar</h4>
+      <ul>
+        <li><a href="#coleccion">Colección</a></li>
+        <li><a href="#taller">El Taller</a></li>
+        <li><a href="#materiales">Materiales</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Servicios</h4>
+      <ul>
+        <li><a href="#contacto">Diseño a Medida</a></li>
+        <li><a href="#contacto">Reparación y Cuidado</a></li>
+        <li><a href="#contacto">Certificación de Gemas</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contacto</h4>
+      <ul>
+        <li><a href="mailto:rubysgold@gmail.com">rubysgold@gmail.com</a></li>
+        <li><a href="tel:+593982337694">+593 98 233 7694</a></li>
+        <li><a href="#">Quito, Ecuador</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Ruby's Gold. Todos los derechos reservados.</span>
+    <span>Hecho a mano, pieza por pieza.</span>
+  </div>
+</footer>
+
+<script>
+   // Menú móvil simple
+  const toggle = document.querySelector('.menu-toggle');
+  const navUl = document.querySelector('nav ul');
+  toggle.addEventListener('click', () => {
+    const visible = navUl.style.display === 'flex';
+    navUl.style.display = visible ? 'none' : 'flex';
+    navUl.style.flexDirection = 'column';
+    navUl.style.position = 'fixed';
+    navUl.style.top = '70px';
+    navUl.style.right = '4vw';
+    navUl.style.background = 'rgba(10,14,39,0.97)';
+    navUl.style.padding = '1.5rem 2rem';
+    navUl.style.borderRadius = '4px';
+    navUl.style.border = '1px solid rgba(212,175,55,0.2)';
+    navUl.style.gap = '1.2rem';
+  });
+
+  // Cerrar header compacto al hacer scroll
+  const header = document.querySelector('header');
+  window.addEventListener('scroll', () => {
+    if(window.scrollY > 40){
+      header.style.padding = '0.85rem 4vw';
+    } else {
+      header.style.padding = '1.4rem 4vw';
+    }
+  });
+</script>
+
+</body>
+</html>
